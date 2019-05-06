@@ -19,19 +19,19 @@ class Store {
 
   add(data) {
     this.data.push(data);
-    localStorage.setItem(KEY, JSON.stringify(this.data));
+    localStorage.setItem(KEY, JSON.stringify(this.data.sort((a, b) => a.time - b.time)));
     this.emit('change');
   }
 
   remove(idx) {
     this.data.splice(idx, 1);
-    localStorage.setItem(KEY, JSON.stringify(this.data));
+    localStorage.setItem(KEY, JSON.stringify(this.data.sort((a, b) => a.time - b.time)));
     this.emit('change');
   }
 
   update(idx, item) {
     this.data[idx] = Object.assign(this.data[idx], item);
-    localStorage.setItem(KEY, JSON.stringify(this.data));
+    localStorage.setItem(KEY, JSON.stringify(this.data.sort((a, b) => a.time - b.time)));
     this.emit('change');
   }
 

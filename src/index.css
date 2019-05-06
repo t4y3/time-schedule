@@ -14,6 +14,11 @@ html, body {
 }
 
 #app {
+  --ts-picker-row-height: 30px;
+  --ts-picker-rows: 5;
+}
+
+#app {
   height: 100%;
 }
 
@@ -22,10 +27,12 @@ html, body {
   flex-direction: column;
   height: 100%;
   position: relative;
+  overflow: scroll;
 }
 
 .body {
   flex: 1;
+  height: 100%;
   position: relative;
 }
 
@@ -34,6 +41,8 @@ html, body {
 }
 
 .list {
+  height: 100%;
+  overflow: scroll;
 }
 
 .list__item {
@@ -111,6 +120,7 @@ html, body {
   align-items: center;
   justify-content: center;
   width: 100%;
+  padding: 16px 0;
   transform: translateY(100%);
   transition: all .2s ease;
   background-color: #fff;
@@ -123,7 +133,7 @@ html, body {
 .wrap {
   display: flex;
   justify-content: center;
-  height: 150px;
+  height: calc(var(--ts-picker-row-height) * var(--ts-picker-rows));
   overflow: hidden;
   position: relative;
 }
@@ -135,14 +145,14 @@ html, body {
   left: 0;
   transform: translateY(-50%);
   width: 100%;
-  height: 30px;
+  height: var(--ts-picker-row-height);
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
   box-sizing: border-box;
 }
 
 .hour {
-  padding: 0 16px;
+  padding: 0 24px;
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
   overflow-scrolling: touch;
@@ -154,12 +164,12 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  height: 30px;
+  height: var(--ts-picker-row-height);
   scroll-snap-align: center;
 }
 
 .time {
-  padding: 0 16px;
+  padding: 0 24px;
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
   overflow-scrolling: touch;
@@ -171,14 +181,14 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  height: 30px;
+  height: var(--ts-picker-row-height);
   scroll-snap-align: center;
 }
 
 .save {
   height: 40px;
   line-height: 40px;
-  margin: 16px 0;
+  margin: 16px 0 0;
   padding: 0 40px;
   background-color: darkseagreen;
   border-radius: 20px;

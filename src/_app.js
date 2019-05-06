@@ -24,6 +24,11 @@ export default class App {
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleHourScrollEnd = debounce(this.handleHourScrollEnd.bind(this), 100);
     this.handleTimeScrollEnd = debounce(this.handleTimeScrollEnd.bind(this), 100);
+
+    this.root = document.querySelector('#app');
+    const style = window.getComputedStyle(this.root);
+    this.cpPickerRowHeight = Number(style.getPropertyValue('--ts-picker-row-height').split('px')[0]);
+    this.cpPickerRows = Number(style.getPropertyValue('--ts-picker-rows'));
   }
 
   __template() {
@@ -140,8 +145,8 @@ export default class App {
   handleSaveClick() {
     const selectedNo = this.selectedNo;
     this.selectedNo = -1;
-    const hour = Math.round(document.querySelector('.hour').scrollTop / 30);
-    const time = Math.round(document.querySelector('.time').scrollTop / 30);
+    const hour = Math.round(document.querySelector('.hour').scrollTop / this.cpPickerRowHeight);
+    const time = Math.round(document.querySelector('.time').scrollTop / this.cpPickerRowHeight);
     const date = new Date();
     date.setHours(hour);
     date.setMinutes(time);
@@ -159,11 +164,13 @@ export default class App {
 
   handleHourScroll(e) {
     // e.target.scrollTop
+    // console.log(e.target.scrollTop / this.cpPickerRowHeight);
     this.handleHourScrollEnd(e);
   }
 
   handleTimeScroll(e) {
     // e.target.scrollTop
+    // console.log(e.target.scrollTop / this.cpPickerRowHeight);
     this.handleTimeScrollEnd(e);
   }
 
