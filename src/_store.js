@@ -8,29 +8,31 @@ class Store {
 
   init() {
     const storage = localStorage.getItem(KEY);
-    let data = [];
     if (!!storage) {
-      data = JSON.parse(storage);
+      this.data = JSON.parse(storage);
     }
-    this.data = new Proxy(data, {
-      set: (target, prop, value) => {
-        localStorage.setItem(KEY, JSON.stringify(target));
-        this.emit('change');
-        return Reflect.set(target, prop, value);
-      }
-    });
   }
 
   get() {
-    return this.data;
+    return [...this.data];
   }
 
   add(data) {
     this.data.push(data);
+    localStorage.setItem(KEY, JSON.stringify(this.data));
+    this.emit('change');
   }
 
   remove(idx) {
-    this.data = this.data.filter((val, i) => i !== idx);
+    this.data.splice(idx, 1);
+    localStorage.setItem(KEY, JSON.stringify(this.data));
+    this.emit('change');
+  }
+
+  update(idx, item) {
+    this.data[idx] = Object.assign(this.data[idx], item);
+    localStorage.setItem(KEY, JSON.stringify(this.data));
+    this.emit('change');
   }
 
   on(name, fn) {
