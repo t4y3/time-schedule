@@ -1,0 +1,22 @@
+{
+  "name": "Time Schedule",
+  "short_name": "Time Schedule",
+  "theme_color": "#73a396",
+  "background_color": "#c2d0cc",
+  "display": "browser",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src" : "./icons/icon-192x192.png",
+      "sizes" : "192x192",
+      "type" : "image/png"
+    },
+    {
+      "src" : "./icons/icon-512x512.png",
+      "sizes" : "512x512",
+      "type" : "image/png"
+    }
+  ]
+}

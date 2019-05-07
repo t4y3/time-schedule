@@ -156,7 +156,12 @@ html, body {
   -webkit-overflow-scrolling: touch;
   overflow-scrolling: touch;
   scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
   position: relative;
+}
+
+.hour::-webkit-scrollbar {
+  display: none;
 }
 
 .hour__item {
@@ -165,6 +170,7 @@ html, body {
   justify-content: flex-end;
   height: var(--ts-picker-row-height);
   scroll-snap-align: center;
+  transform-style: preserve-3d;
 }
 
 .time {
@@ -173,7 +179,12 @@ html, body {
   -webkit-overflow-scrolling: touch;
   overflow-scrolling: touch;
   scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
   position: relative;
+}
+
+.time::-webkit-scrollbar {
+  display: none;
 }
 
 .time__item {
@@ -182,6 +193,7 @@ html, body {
   justify-content: flex-end;
   height: var(--ts-picker-row-height);
   scroll-snap-align: center;
+  transform-style: preserve-3d;
 }
 
 .save {

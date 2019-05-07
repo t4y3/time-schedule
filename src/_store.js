@@ -19,19 +19,22 @@ class Store {
 
   add(data) {
     this.data.push(data);
-    localStorage.setItem(KEY, JSON.stringify(this.data.sort((a, b) => a.time - b.time)));
+    this.__format();
+    localStorage.setItem(KEY, JSON.stringify(this.data));
     this.emit('change');
   }
 
   remove(idx) {
     this.data.splice(idx, 1);
-    localStorage.setItem(KEY, JSON.stringify(this.data.sort((a, b) => a.time - b.time)));
+    this.__format();
+    localStorage.setItem(KEY, JSON.stringify(this.data));
     this.emit('change');
   }
 
   update(idx, item) {
     this.data[idx] = Object.assign(this.data[idx], item);
-    localStorage.setItem(KEY, JSON.stringify(this.data.sort((a, b) => a.time - b.time)));
+    this.__format();
+    localStorage.setItem(KEY, JSON.stringify(this.data));
     this.emit('change');
   }
 
@@ -46,6 +49,23 @@ class Store {
     this.handler[name].forEach(fn => {
       fn();
     });
+  }
+
+
+
+  __format() {
+    const now = new Date();
+    this.data = this.data.map(v => {
+      const date = new Date(v.time);
+      date.setFullYear(now.getFullYear());
+      date.setMonth(now.getMonth());
+      return {
+        text: v.text,
+        time: date.getTime()
+      };
+    });
+
+    this.data = this.data.sort((a, b) => a.time - b.time);
   }
 }
 

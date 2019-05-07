@@ -9,7 +9,7 @@ export default class App {
     this.store.on('change', () => {
       this.list = this.store.get();
       this.__render();
-    })
+    });
 
     this.list = this.store.get();
     this.selectedNo = -1;
@@ -24,6 +24,8 @@ export default class App {
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleHourScrollEnd = debounce(this.handleHourScrollEnd.bind(this), 100);
     this.handleTimeScrollEnd = debounce(this.handleTimeScrollEnd.bind(this), 100);
+    this.handleHourItemTap = this.handleHourItemTap.bind(this);
+    this.handleTimeItemTap = this.handleTimeItemTap.bind(this);
 
     this.root = document.querySelector('#app');
     const style = window.getComputedStyle(this.root);
@@ -87,32 +89,28 @@ export default class App {
           <div class="sheet__container">
             <div class="wrap">
               <div class="hour" @scroll="${this.handleHourScroll}">
-                <div class="hour__item"></div>
-                <div class="hour__item"></div>
+                ${this.__getDummyPickerHourItem()}
                 ${
                   repeat(
                     Array.from({length: 24}, (v, i) => i),
-                    item => html`
-                      <div class="hour__item">${item}</div>                    
+                    (item, i) => html`
+                      <div class="hour__item" index="${i}" @click="${this.handleHourItemTap}">${item}</div>                    
                     `
                   )
                 }
-                <div class="hour__item"></div>
-                <div class="hour__item"></div>
+                ${this.__getDummyPickerHourItem()}
               </div>
               <div class="time" @scroll="${this.handleTimeScroll}">
-                <div class="time__item"></div>
-                <div class="time__item"></div>
+                ${this.__getDummyPickerTimeItem()}
                 ${
                   repeat(
                     Array.from({length: 60}, (v, i) => i),
-                    item => html`
-                      <div class="time__item">${item}</div>                    
+                    (item, i) => html`
+                      <div class="time__item" index="${i}" @click="${this.handleTimeItemTap}">${item}</div>                    
                     `
                   )
                 }
-                <div class="time__item"></div>
-                <div class="time__item"></div>
+                ${this.__getDummyPickerTimeItem()}
               </div>
             </div>
             <div class="save" @click="${this.handleSaveClick}">save</div>
@@ -132,6 +130,9 @@ export default class App {
 
   handleTimeClick(e) {
     this.selectedNo = Number(e.currentTarget.getAttribute('index'));
+    const date = new Date(this.list[this.selectedNo].time);
+    this.__moveHourPicker(date.getHours());
+    this.__moveTimePicker(date.getMinutes());
     this.__render();
   }
 
@@ -194,5 +195,49 @@ export default class App {
     this.store.update(index, {
       text: e.target.value
     })
+  }
+
+  handleHourItemTap(e) {
+    const index = Number(e.currentTarget.getAttribute('index'));
+    this.__moveHourPicker(index);
+  }
+
+  handleTimeItemTap(e) {
+    const index = Number(e.currentTarget.getAttribute('index'));
+    this.__moveTimePicker(index);
+  }
+
+  __moveHourPicker(index) {
+    this.root.querySelector('.hour').scrollTo(0, index * this.cpPickerRowHeight);
+  }
+
+  __moveTimePicker(index) {
+    this.root.querySelector('.time').scrollTo(0, index * this.cpPickerRowHeight);
+  }
+
+  __getDummyPickerHourItem() {
+    return html`
+      ${
+        repeat(
+          Array.from({length: Math.floor(this.cpPickerRows / 2)}, (v, i) => i),
+          () => html`
+            <div class="hour__item hour__item--dummy"></div>              
+          `
+        )
+      }
+    `;
+  }
+
+  __getDummyPickerTimeItem() {
+    return html`
+      ${
+        repeat(
+          Array.from({length: Math.floor(this.cpPickerRows / 2)}, (v, i) => i),
+          () => html`
+            <div class="time__item time__item--dummy"></div>              
+          `
+        )
+      }
+    `;
   }
 }
