@@ -8,6 +8,7 @@ export default class App {
     this.store = store;
     this.store.on('change', () => {
       this.list = this.store.get();
+      this.__updateCustomProperty();
       this.__render();
     });
 
@@ -26,11 +27,13 @@ export default class App {
     this.handleTimeScrollEnd = debounce(this.handleTimeScrollEnd.bind(this), 100);
     this.handleHourItemTap = this.handleHourItemTap.bind(this);
     this.handleTimeItemTap = this.handleTimeItemTap.bind(this);
+    this.handleCheckClick = this.handleCheckClick.bind(this);
 
     this.root = document.querySelector('#app');
     const style = window.getComputedStyle(this.root);
     this.cpPickerRowHeight = Number(style.getPropertyValue('--ts-picker-row-height').split('px')[0]);
     this.cpPickerRows = Number(style.getPropertyValue('--ts-picker-rows'));
+    this.__updateCustomProperty();
   }
 
   __template() {
@@ -68,6 +71,16 @@ export default class App {
                       @click="${this.handleItemClick}"
                     >
                       <div
+                        class="${classMap({
+                          item__check: true,
+                          'item__check--checked': !!item.checked
+                        })}"
+                        index="${i}"
+                        @click="${this.handleCheckClick}"
+                      >
+                        <i class="material-icons">check</i>
+                      </div>
+                      <div
                         class="item__time"
                         @click="${this.handleTimeClick}"
                         index="${i}"
@@ -83,7 +96,7 @@ export default class App {
                           @change="${this.handleTextChange}"
                         >
                       </div>
-                      <div class="item__delete" index="${i}" @click="${this.handleDeleteClick}"><i class="material-icons">delete_forever</i></div>
+                      <div class="item__delete" index="${i}" @click="${this.handleDeleteClick}"><i class="material-icons">delete_outline</i></div>
                     </div>
                   `
                 }
@@ -218,6 +231,28 @@ export default class App {
   handleTimeItemTap(e) {
     const index = Number(e.currentTarget.getAttribute('index'));
     this.__moveTimePicker(index);
+  }
+
+  handleCheckClick(e) {
+    const index = Number(e.currentTarget.getAttribute('index'));
+    this.store.update(index, {
+      checked: !this.list[index].checked
+    });
+  }
+
+  __updateCustomProperty() {
+    const now = new Date().getTime();
+    const endedList = this.list.filter(v => v.time < now);
+
+    if (endedList.length <= 1) {
+      this.root.style.setProperty('--ts-ended-bar-height', '0%')
+    }
+
+    const height = (endedList.length - 1) / (this.list.length -1 ) * 100;
+    this.root.style.setProperty('--ts-ended-bar-height', `${height}%`);
+
+    // listの要素数を設定
+    this.root.style.setProperty('--ts-list-rows', `${this.list.length}`);
   }
 
   __moveHourPicker(index) {

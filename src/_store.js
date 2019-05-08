@@ -1,5 +1,12 @@
 const KEY = 'time-schedule';
 
+/**
+ * {
+ *   text: '',
+ *   time: Date.now(),
+ *   checked: true
+ * }
+ */
 class Store {
   constructor() {
     this.data = [];
@@ -10,6 +17,7 @@ class Store {
     const storage = localStorage.getItem(KEY);
     if (!!storage) {
       this.data = JSON.parse(storage);
+      this.__format();
     }
   }
 
@@ -61,7 +69,7 @@ class Store {
       date.setMonth(now.getMonth());
       date.setDate(now.getDate());
       return {
-        text: v.text,
+        ...v,
         time: date.getTime()
       };
     });
