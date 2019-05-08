@@ -1,0 +1,1 @@
+{"version":3,"sources":["serviceWorker.js"],"names":["self","addEventListener","event"],"mappings":";AAAAA,KAAKC,iBAAiB,QAAS,SAASC","file":"serviceWorker.js","sourceRoot":"../src","sourcesContent":["self.addEventListener('fetch', function(event) {\n\n});\n"]}
