@@ -5,8 +5,8 @@
   "background_color": "#c2d0cc",
   "display": "browser",
   "orientation": "portrait",
-  "scope": "/",
-  "start_url": "/",
+  "scope": "/time-schedule/",
+  "start_url": "/time-schedule/",
   "icons": [
     {
       "src" : "./icons/icon-192x192.png",
