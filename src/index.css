@@ -11,6 +11,7 @@ html {
 html, body {
   height: 100%;
   overflow: hidden;
+  color: #4e4b4b;
 }
 
 #app {
@@ -29,10 +30,30 @@ html, body {
   position: relative;
 }
 
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  padding: 8px 16px;
+}
+
+.head__icon {
+  width: 24px;
+}
+
+.cls-1 {
+  fill: #73a396;
+}
+
+.cls-2 {
+  fill: #c2d0cc;
+}
+
 .body {
   flex: 1;
-  height: 100%;
   position: relative;
+  overflow: hidden;
 }
 
 .tail {
@@ -42,10 +63,16 @@ html, body {
 .list {
   height: 100%;
   overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
 }
 
 .list__item {
+  border-bottom: 1px solid rgba(194, 208, 204, 0.6);
+}
 
+.list__item:first-child {
+  border-top: 1px solid rgba(194, 208, 204, 0.6);
 }
 
 .item {
@@ -53,14 +80,17 @@ html, body {
   align-items: center;
   justify-content: flex-start;
   padding: 8px 16px;
+  transition: background-color .2s ease;
 }
 
 .item--selected {
-  background-color: aliceblue;
+  background-color: rgba(194, 208, 204, 0.1);
 }
 
 .item__time {
   margin-right: 16px;
+  font-size: 14px;
+  cursor: pointer;
 }
 
 .item__text {
@@ -72,10 +102,37 @@ html, body {
 .item__text input {
   padding: 4px;
   width: 100%;
+  font-size: 16px;
+  border: none;
+  background-color: inherit;
+  appearance: none;
+  color: inherit;
+}
+
+.item__text input::placeholder {
+  opacity: .6;
+}
+
+.item__text input:focus {
+  outline: none;
 }
 
 .item__delete {
   margin-left: auto;
+  transition: all .2s ease;
+  cursor: pointer;
+}
+
+.item__delete:active {
+  transform: scale(.9);
+  opacity: .8;
+
+}
+
+.item__delete i {
+  display: block;
+  color: #736d6d;
+  font-size: 20px;
 }
 
 .add {
@@ -86,11 +143,19 @@ html, body {
   bottom: 0;
   right: 0;
   margin: 0 24px 24px 0;
+  transition: all .2s ease;
+  cursor: pointer;
+}
+
+.add:active {
+  transform: scale(.9);
+  opacity: .8;
 }
 
 .add i {
+  display: block;
   font-size: 56px;
-  color: aquamarine;
+  color: #c2d0cc;
 }
 
 .sheet {
@@ -145,8 +210,8 @@ html, body {
   transform: translateY(-50%);
   width: 100%;
   height: var(--ts-picker-row-height);
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
+  border-top: 1px solid rgba(194, 208, 204, 0.6);
+  border-bottom: 1px solid rgba(194, 208, 204, 0.6);
   box-sizing: border-box;
 }
 
@@ -171,6 +236,7 @@ html, body {
   height: var(--ts-picker-row-height);
   scroll-snap-align: center;
   transform-style: preserve-3d;
+  cursor: pointer;
 }
 
 .time {
@@ -194,6 +260,7 @@ html, body {
   height: var(--ts-picker-row-height);
   scroll-snap-align: center;
   transform-style: preserve-3d;
+  cursor: pointer;
 }
 
 .save {
@@ -201,6 +268,14 @@ html, body {
   line-height: 40px;
   margin: 16px 0 0;
   padding: 0 40px;
-  background-color: darkseagreen;
+  background-color: #c2d0cc;
   border-radius: 20px;
+  color: #fff;
+  transition: all .2s ease;
+  cursor: pointer;
+}
+
+.save:active {
+  transform: scale(.9);
+  opacity: .8;
 }

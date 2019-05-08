@@ -1,4 +1,4 @@
-import {html, render} from "lit-html";
+import {html, render, svg} from "lit-html";
 import {repeat} from "lit-html/directives/repeat";
 import {classMap} from "lit-html/directives/class-map";
 import debounce from './_debounce';
@@ -36,6 +36,20 @@ export default class App {
   __template() {
     return html`
       <div class="container">
+        <div class="head">
+          <div class="head__icon">
+            ${svg`
+              <svg viewBox="0 0 373.929 500">
+                <g transform="translate(-64.548 0)">
+                  <path class="cls-1" d="M256,343.319A23.283,23.283,0,0,0,269.556,301.1l-8.42-112.928c-.225-3.032-2.456-5.37-5.137-5.37s-4.911,2.338-5.136,5.37L242.443,301.1A23.283,23.283,0,0,0,256,343.319Z" transform="translate(-4.487 -6.241)"/>
+                  <path class="cls-2" d="M423.778,242.355A187.656,187.656,0,0,0,96.49,210.841a184.458,184.458,0,0,0-17.244,175.9A186.922,186.922,0,0,0,195.923,491.66a187.665,187.665,0,0,0,210.611-73.41,184.437,184.437,0,0,0,17.243-175.9ZM251.512,173.2A142.652,142.652,0,0,1,369.69,235.533a140.617,140.617,0,0,1,13.133,134.026,143.022,143.022,0,0,1-249.486,24A140.609,140.609,0,0,1,120.2,259.539,142.568,142.568,0,0,1,251.512,173.2Z" transform="translate(0)"/>
+                  <path class="cls-1" d="M431.28,140.634l-28.532-23.956-29.969,35.716,28.54,23.956Z" transform="translate(-8.974 -3.095)"/>
+                  <path class="cls-2" d="M228.578,99.74v16.938h54.843V99.74a53.653,53.653,0,1,0-54.843,0Zm0-30.664V83c-.334-.308-.668-.617-.994-.943a40.189,40.189,0,1,1,56.839,0c-.334.326-.668.635-1,.943V69.076Z" transform="translate(-4.487)"/>
+                </g>
+              </svg>
+            `}
+          </div>
+        </div>
         <div class="body">
           <div class="list">
             ${
@@ -176,12 +190,11 @@ export default class App {
   }
 
   handleHourScrollEnd(e) {
-    console.log(e)
-    console.log('Hour End', this.selectedNo);
+    // console.log('Hour End', this.selectedNo);
   }
 
   handleTimeScrollEnd(e) {
-    console.log('Time End', this.selectedNo);
+    // console.log('Time End', this.selectedNo);
   }
 
   handleDeleteClick(e) {

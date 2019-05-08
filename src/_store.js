@@ -59,6 +59,7 @@ class Store {
       const date = new Date(v.time);
       date.setFullYear(now.getFullYear());
       date.setMonth(now.getMonth());
+      date.setDate(now.getDate());
       return {
         text: v.text,
         time: date.getTime()
