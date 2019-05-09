@@ -8,6 +8,7 @@ export default class App {
   store: Partial<Store>;
   list: TsItem[];
   selectedNo: number;
+  isSheetActive: boolean;
   root: HTMLElement;
   cpPickerRowHeight: number;
   cpPickerRows: number;
@@ -22,6 +23,7 @@ export default class App {
 
     this.list = this.store.get();
     this.selectedNo = -1;
+    this.isSheetActive = false;
     this.handleAddClick = this.handleAddClick.bind(this);
     this.handleLayerClick = this.handleLayerClick.bind(this);
     this.handleSaveClick = this.handleSaveClick.bind(this);
@@ -41,6 +43,8 @@ export default class App {
     this.handleHourItemTap = this.handleHourItemTap.bind(this);
     this.handleTimeItemTap = this.handleTimeItemTap.bind(this);
     this.handleCheckClick = this.handleCheckClick.bind(this);
+    this.handleTextFocus = this.handleTextFocus.bind(this);
+    this.handleTextBlur = this.handleTextBlur.bind(this);
 
     this.root = document.querySelector('#app');
     const style = window.getComputedStyle(this.root);
@@ -106,6 +110,8 @@ export default class App {
                       placeholder="テキストを入力"
                       index="${i}"
                       @change="${this.handleTextChange}"
+                      @focus="${this.handleTextFocus}"
+                      @blur="${this.handleTextBlur}"
                     />
                   </div>
                   <div
@@ -127,7 +133,7 @@ export default class App {
         <div
           class="${classMap({
             sheet: true,
-            'sheet--active': this.selectedNo > -1
+            'sheet--active': this.isSheetActive
           })}"
           @click="${this.handleLayerClick}"
         >
@@ -183,6 +189,7 @@ export default class App {
    */
   handleTimeClick(e) {
     this.selectedNo = Number(e.currentTarget.getAttribute('index'));
+    this.isSheetActive = true;
     const date = new Date(this.list[this.selectedNo].time);
     this.__moveHourPicker(date.getHours());
     this.__moveTimePicker(date.getMinutes());
@@ -226,6 +233,7 @@ export default class App {
   handleLayerClick(e) {
     if (e.target.classList.contains('sheet')) {
       this.selectedNo = -1;
+      this.isSheetActive = false;
       this.__render();
     }
   }
@@ -298,6 +306,25 @@ export default class App {
     this.store.update(index, {
       checked: !this.list[index].checked
     });
+  }
+
+  /**
+   * textのfocus時
+   * @param e
+   */
+  handleTextFocus(e) {
+    const index = Number(e.currentTarget.getAttribute('index'));
+    this.selectedNo = index;
+    this.__render();
+  }
+
+  /**
+   * textのblur時
+   * @param e
+   */
+  handleTextBlur(e) {
+    this.selectedNo = -1;
+    this.__render();
   }
 
   /**
