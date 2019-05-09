@@ -74,18 +74,20 @@ html, body {
   box-sizing: border-box;
   content: "";
   display: block;
-  width: 4px;
+  width: 6px;
   position: absolute;
   top: 18px;
   /* TODO: 変数 */
   height: calc((var(--ts-list-rows) - 1) * 42px);
-  left: 22px;
+  left: 21px;
   border: 1px solid rgba(194, 208, 204, 0.6);
   border-radius: 2px;
   background-image: linear-gradient(to bottom , rgba(194, 208, 204, 1) calc((var(--ts-ended-bar-height) - 1) * 42px), #fff calc((var(--ts-ended-bar-height) - 1) * 42px));
 }
 
 .list__item {
+  height: 42px;
+  padding: 0 16px;
   position: relative;
   /*border-bottom: 1px solid rgba(194, 208, 204, 0.6);*/
 }
@@ -98,7 +100,6 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding: 8px 16px;
   transition: background-color .2s ease;
 }
 
