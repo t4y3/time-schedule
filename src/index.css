@@ -82,7 +82,7 @@ html, body {
   left: 22px;
   border: 1px solid rgba(194, 208, 204, 0.6);
   border-radius: 2px;
-  background-image: linear-gradient(to bottom , rgba(194, 208, 204, 1) var(--ts-ended-bar-height), #fff var(--ts-ended-bar-height));
+  background-image: linear-gradient(to bottom , rgba(194, 208, 204, 1) calc((var(--ts-ended-bar-height) - 1) * 42px), #fff calc((var(--ts-ended-bar-height) - 1) * 42px));
 }
 
 .list__item {

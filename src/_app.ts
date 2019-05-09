@@ -307,14 +307,7 @@ export default class App {
   __updateCustomProperty() {
     const now = new Date().getTime();
     const endedList = this.list.filter(v => v.time < now);
-
-    if (endedList.length <= 1) {
-      this.root.style.setProperty('--ts-ended-bar-height', '0%');
-    }
-
-    const height = ((endedList.length - 1) / (this.list.length - 1)) * 100;
-    this.root.style.setProperty('--ts-ended-bar-height', `${height}%`);
-
+    this.root.style.setProperty('--ts-ended-bar-height', `${endedList.length}`);
     // listの要素数を設定
     this.root.style.setProperty('--ts-list-rows', `${this.list.length}`);
   }
