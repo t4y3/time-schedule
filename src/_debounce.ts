@@ -7,7 +7,7 @@ const debounce = (fn, interval) => {
     timerId = setTimeout(() => {
       fn.apply(context, args);
     }, interval);
-  }
+  };
 };
 
 export default debounce;

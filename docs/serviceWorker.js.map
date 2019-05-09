@@ -1,1 +1,1 @@
-{"version":3,"sources":["serviceWorker.js"],"names":["self","addEventListener","event"],"mappings":";AAAAA,KAAKC,iBAAiB,QAAS,SAASC","file":"serviceWorker.js","sourceRoot":"../src","sourcesContent":["self.addEventListener('fetch', function(event) {\n\n});\n"]}
+{"version":3,"sources":["serviceWorker.ts"],"names":[],"mappings":";AAAA,KAAK,iBAAiB,QAAS,SAAS","file":"serviceWorker.js","sourceRoot":"../src","sourcesContent":["self.addEventListener('fetch', function(event) {\n  // do...\n});\n"]}

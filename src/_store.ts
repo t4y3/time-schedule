@@ -1,13 +1,15 @@
 const KEY = 'time-schedule';
 
-/**
- * {
- *   text: '',
- *   time: Date.now(),
- *   checked: true
- * }
- */
-class Store {
+export interface TsItem {
+  text: string;
+  time: number;
+  checked: boolean;
+}
+
+export class Store {
+  data: TsItem[];
+  handler: {};
+
   constructor() {
     this.data = [];
     this.handler = {};
@@ -15,7 +17,7 @@ class Store {
 
   init() {
     const storage = localStorage.getItem(KEY);
-    if (!!storage) {
+    if (storage) {
       this.data = JSON.parse(storage);
       this.__format();
     }
@@ -58,8 +60,6 @@ class Store {
       fn();
     });
   }
-
-
 
   __format() {
     const now = new Date();

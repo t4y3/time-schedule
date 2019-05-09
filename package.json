@@ -5,7 +5,19 @@
   "main": "index.js",
   "scripts": {
     "start": "parcel src/index.html -d docs",
-    "build": "rm -rf docs/ && parcel build src/index.html -d docs --public-url ./"
+    "build": "rm -rf docs/ && parcel build src/index.html -d docs --public-url ./",
+    "lint": "tslint -c tsconfig.json 'src/**/*.ts'"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts}": [
+      "tslint -c tsconfig.json --fix",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
@@ -24,7 +36,11 @@
     "lint-staged": "^8.1.5",
     "parcel-bundler": "^1.12.3",
     "prettier": "^1.17.0",
-    "prettier-eslint-cli": "^4.7.1"
+    "tslint": "^5.16.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-config-standard": "^8.0.1",
+    "tslint-plugin-prettier": "^2.0.1",
+    "typescript": "^3.4.5"
   },
   "dependencies": {
     "lit-html": "^1.0.0"
