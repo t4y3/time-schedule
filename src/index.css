@@ -18,7 +18,7 @@ html, body {
   --ts-picker-row-height: 30px;
   --ts-picker-rows: 5;
   --ts-list-rows: 0;
-  --ts-ended-bar-height: 0%
+  --ts-ended-bar-height: 0
 }
 
 #app {

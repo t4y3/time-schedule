@@ -24,6 +24,14 @@ export default class App {
     this.list = this.store.get();
     this.selectedNo = -1;
     this.isSheetActive = false;
+
+    // DOM・CustomProperty
+    this.root = document.querySelector('#app');
+    this.__getCustomProperty();
+    this.__updateCustomProperty();
+
+
+    // hanler系
     this.handleAddClick = this.handleAddClick.bind(this);
     this.handleLayerClick = this.handleLayerClick.bind(this);
     this.handleSaveClick = this.handleSaveClick.bind(this);
@@ -45,14 +53,14 @@ export default class App {
     this.handleCheckClick = this.handleCheckClick.bind(this);
     this.handleTextFocus = this.handleTextFocus.bind(this);
     this.handleTextBlur = this.handleTextBlur.bind(this);
+  }
 
-    this.root = document.querySelector('#app');
-    const style = window.getComputedStyle(this.root);
-    this.cpPickerRowHeight = Number(
-      style.getPropertyValue('--ts-picker-row-height').split('px')[0]
-    );
-    this.cpPickerRows = Number(style.getPropertyValue('--ts-picker-rows'));
-    this.__updateCustomProperty();
+  $(selector) {
+    return this.root.querySelector(selector);
+  }
+
+  $$(selector) {
+    return this.root.querySelectorAll(selector);
   }
 
   __template() {
@@ -213,10 +221,10 @@ export default class App {
     const selectedNo = this.selectedNo;
     this.selectedNo = -1;
     const hour = Math.round(
-      document.querySelector('.hour').scrollTop / this.cpPickerRowHeight
+      this.$('.hour').scrollTop / this.cpPickerRowHeight
     );
     const time = Math.round(
-      document.querySelector('.time').scrollTop / this.cpPickerRowHeight
+      this.$('.time').scrollTop / this.cpPickerRowHeight
     );
     const date = new Date();
     date.setHours(hour);
@@ -328,6 +336,18 @@ export default class App {
   }
 
   /**
+   * Custom Propertyを取得
+   * @private
+   */
+  __getCustomProperty() {
+    const style = window.getComputedStyle(this.root);
+    this.cpPickerRowHeight = Number(
+      style.getPropertyValue('--ts-picker-row-height').split('px')[0]
+    );
+    this.cpPickerRows = Number(style.getPropertyValue('--ts-picker-rows'));
+  }
+
+  /**
    * Custom Propertyを更新
    * @private
    */
@@ -345,9 +365,7 @@ export default class App {
    * @private
    */
   __moveHourPicker(index) {
-    this.root
-      .querySelector('.hour')
-      .scrollTo(0, index * this.cpPickerRowHeight);
+    this.$('.hour').scrollTo(0, index * this.cpPickerRowHeight);
   }
 
   /**
@@ -356,9 +374,7 @@ export default class App {
    * @private
    */
   __moveTimePicker(index) {
-    this.root
-      .querySelector('.time')
-      .scrollTo(0, index * this.cpPickerRowHeight);
+    this.$('.time').scrollTo(0, index * this.cpPickerRowHeight);
   }
 
   /**
