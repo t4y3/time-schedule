@@ -115,7 +115,7 @@ export default class App {
                   <div class="item__text">
                     <input
                       type="text"
-                      value="${item.text}"
+                      .value="${item.text}"
                       placeholder="テキストを入力"
                       id="${item.id}"
                       @change="${this.handleTextChange}"

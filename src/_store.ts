@@ -62,7 +62,9 @@ export class Store {
   @action
   update(id, plan) {
     const foundIndex = this.plans.findIndex(v => v.id === id);
-    this.plans[foundIndex] = Object.assign(this.plans[foundIndex], plan);
+    const plans = [...this.plans];
+    plans[foundIndex] = Object.assign(plans[foundIndex], plan);
+    this.plans = this.sort(plans);
   }
 
   sort(plans) {
