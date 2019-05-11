@@ -53,6 +53,7 @@ export default class App {
     this.handleCheckClick = this.handleCheckClick.bind(this);
     this.handleTextFocus = this.handleTextFocus.bind(this);
     this.handleTextBlur = this.handleTextBlur.bind(this);
+    this.handleAllDelete = this.handleAllDelete.bind(this);
   }
 
   $(selector) {
@@ -137,7 +138,11 @@ export default class App {
             <i class="material-icons">add_circle</i>
           </div>
         </div>
-        <div class="tail"></div>
+        <div class="tail">
+          <div class="tail__item" @click="${this.handleAllDelete}">
+            <i class="material-icons">delete</i>
+          </div>
+        </div>
         <div
           class="${classMap({
             sheet: true,
@@ -338,6 +343,13 @@ export default class App {
   handleTextBlur(e) {
     this.selectedId = '';
     this.__render();
+  }
+
+  /**
+   * 全削除
+   */
+  handleAllDelete() {
+    this.store.removeAll();
   }
 
   /**

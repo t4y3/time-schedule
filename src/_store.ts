@@ -55,6 +55,11 @@ export class Store {
   }
 
   @action
+  removeAll() {
+    this.plans = [];
+  }
+
+  @action
   update(id, plan) {
     const foundIndex = this.plans.findIndex(v => v.id === id);
     this.plans[foundIndex] = Object.assign(this.plans[foundIndex], plan);

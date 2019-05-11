@@ -59,7 +59,28 @@ html, body {
 }
 
 .tail {
+  padding: 8px 16px;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  border-top: 1px solid rgba(194, 208, 204, 0.6);
+
+}
+
+.tail__item {
+  cursor: pointer;
+  transition: all .2s ease;
+}
+
+.tail__item:active {
+  transform: scale(.9);
+  opacity: .8;
+}
+
+.tail__item i {
+  font-size: 24px;
+  color: #ef3666;
 }
 
 .list {
@@ -251,7 +272,6 @@ html, body {
 .item__delete:active {
   transform: scale(.9);
   opacity: .8;
-
 }
 
 .item__delete i {
