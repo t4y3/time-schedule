@@ -8,7 +8,8 @@
   ],
   "compilerOptions": {
     "target": "es5",
-    "lib": ["es2017", "dom"]
+    "lib": ["es2017", "dom"],
+    "experimentalDecorators": true
   },
   "rules": {
     "prettier": [

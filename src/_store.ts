@@ -1,3 +1,4 @@
+import {observable, autorun, computed, action} from "mobx";
 const KEY = 'time-schedule';
 
 export interface TsItem {
@@ -7,45 +8,57 @@ export interface TsItem {
 }
 
 export class Store {
-  data: TsItem[];
+  @observable plans: TsItem[];
   handler: {};
 
   constructor() {
-    this.data = [];
+    const storage = localStorage.getItem(KEY);
+    if (storage) {
+      this.plans = this.sort(JSON.parse(storage));
+    } else {
+      this.plans = [];
+    }
     this.handler = {};
   }
 
   init() {
-    const storage = localStorage.getItem(KEY);
-    if (storage) {
-      this.data = JSON.parse(storage);
-      this.__format();
-    }
+    //
   }
 
-  get() {
-    return [...this.data];
+  @computed get all() {
+    return this.plans;
   }
 
-  add(data) {
-    this.data.push(data);
-    this.__format();
-    localStorage.setItem(KEY, JSON.stringify(this.data));
-    this.emit('change');
+  @action
+  add(plan) {
+    let plans = [].concat(this.plans, [plan]);
+    this.plans = this.sort(plans);
   }
 
-  remove(idx) {
-    this.data.splice(idx, 1);
-    this.__format();
-    localStorage.setItem(KEY, JSON.stringify(this.data));
-    this.emit('change');
+  @action
+  remove(index) {
+    this.plans = this.plans.filter((plan, i) => i !== index);
   }
 
-  update(idx, item) {
-    this.data[idx] = Object.assign(this.data[idx], item);
-    this.__format();
-    localStorage.setItem(KEY, JSON.stringify(this.data));
-    this.emit('change');
+  @action
+  update(index, plan) {
+    console.log(index, plan)
+    this.plans[index] = Object.assign(this.plans[index], plan);
+  }
+
+  sort(plans) {
+    const now = new Date();
+    plans = plans.map(v => {
+      const date = new Date(v.time);
+      date.setFullYear(now.getFullYear());
+      date.setMonth(now.getMonth());
+      date.setDate(now.getDate());
+      return {
+        ...v,
+        time: date.getTime()
+      };
+    });
+    return plans.sort((a, b) => a.time - b.time);
   }
 
   on(name, fn) {
@@ -56,26 +69,22 @@ export class Store {
   }
 
   emit(name) {
+    if (!this.handler[name]) {
+      return;
+    }
+
     this.handler[name].forEach(fn => {
       fn();
     });
   }
-
-  __format() {
-    const now = new Date();
-    this.data = this.data.map(v => {
-      const date = new Date(v.time);
-      date.setFullYear(now.getFullYear());
-      date.setMonth(now.getMonth());
-      date.setDate(now.getDate());
-      return {
-        ...v,
-        time: date.getTime()
-      };
-    });
-
-    this.data = this.data.sort((a, b) => a.time - b.time);
-  }
 }
 
-export default new Store();
+const store = new Store();
+
+autorun( reaction => {
+  // reaction.dispose();
+  localStorage.setItem(KEY, JSON.stringify(store.plans));
+  store.emit('change');
+});
+
+export default store;

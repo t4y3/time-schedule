@@ -16,12 +16,12 @@ export default class App {
   constructor(store) {
     this.store = store;
     this.store.on('change', () => {
-      this.list = this.store.get();
+      this.list = this.store.all;
       this.__updateCustomProperty();
       this.__render();
     });
 
-    this.list = this.store.get();
+    this.list = this.store.all;
     this.selectedNo = -1;
     this.isSheetActive = false;
 
@@ -220,6 +220,7 @@ export default class App {
   handleSaveClick() {
     const selectedNo = this.selectedNo;
     this.selectedNo = -1;
+    this.isSheetActive = false;
     const hour = Math.round(
       this.$('.hour').scrollTop / this.cpPickerRowHeight
     );
