@@ -271,24 +271,17 @@ export default class App {
    */
   handleDeleteClick(e) {
     e.stopPropagation();
-
-
-
     const index = Number(e.currentTarget.getAttribute('index'));
-
-
-
-    const item = this.$$('.item')[index];
-    const animation = item.animate({
-      height: ['42px', 0],
-      opacity: [1, 0],
-      backgroundColor:   ['rgba(194, 208, 204, 0.4)', 'transparent']
-    }, 200);
-    animation.onfinish = () => {
-      this.store.remove(index);
-    };
-
-    // this.store.remove(index);
+    // const item = this.$$('.item')[index];
+    // const animation = item.animate({
+    //   height: ['42px', 0],
+    //   opacity: [1, 0],
+    //   backgroundColor:   ['rgba(194, 208, 204, 0.4)', 'transparent']
+    // }, 200);
+    // animation.onfinish = () => {
+    //   this.store.remove(index);
+    // };
+    this.store.remove(index);
   }
 
   /**
