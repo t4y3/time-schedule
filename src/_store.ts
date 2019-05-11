@@ -2,9 +2,12 @@ import {observable, autorun, computed, action} from "mobx";
 const KEY = 'time-schedule';
 
 export interface TsItem {
+  id: string,
   text: string;
   time: number;
   checked: boolean;
+  add: boolean;
+  delete: boolean;
 }
 
 export class Store {
@@ -14,8 +17,9 @@ export class Store {
   constructor() {
     const storage = localStorage.getItem(KEY);
     if (storage) {
+      // 初期の整形
       const plans = JSON.parse(storage);
-      this.plans = this.deleteAdd(this.sort(plans));
+      this.plans = this.deleteAdd(this.sort(plans)).filter(v => !v.delete);
     } else {
       this.plans = [];
     }
@@ -32,18 +36,28 @@ export class Store {
 
   @action
   add(plan) {
-    let plans = [].concat(this.deleteAdd(this.plans), [plan]);
+    let plans = [].concat(this.plans, [plan]);
     this.plans = this.sort(plans);
   }
 
   @action
-  remove(index) {
-    this.plans = this.deleteAdd(this.plans.filter((plan, i) => i !== index));
+  remove(id) {
+    this.plans = this.plans.map((plan, i) => {
+      if (plan.id === id) {
+        return {
+          ...plan,
+          add: false,
+          delete: true
+        };
+      }
+      return plan;
+    });
   }
 
   @action
-  update(index, plan) {
-    this.plans[index] = Object.assign(this.plans[index], plan, { add: false });
+  update(id, plan) {
+    const foundIndex = this.plans.findIndex(v => v.id === id);
+    this.plans[foundIndex] = Object.assign(this.plans[foundIndex], plan);
   }
 
   sort(plans) {

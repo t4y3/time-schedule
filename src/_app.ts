@@ -7,7 +7,7 @@ import { Store, TsItem } from './_store';
 export default class App {
   store: Partial<Store>;
   list: TsItem[];
-  selectedNo: number;
+  selectedId: string;
   isSheetActive: boolean;
   root: HTMLElement;
   cpPickerRowHeight: number;
@@ -22,7 +22,7 @@ export default class App {
     });
 
     this.list = this.store.all;
-    this.selectedNo = -1;
+    this.selectedId = '';
     this.isSheetActive = false;
 
     // DOM・CustomProperty
@@ -89,11 +89,12 @@ export default class App {
                   class="${classMap({
                     list__item: true,
                     item: true,
-                    'item--selected': this.selectedNo === i,
-                    'item--add': !!item.add
+                    'item--selected': this.selectedId === item.id,
+                    'item--add': !!item.add,
+                    'item--delete': !!item.delete
                   })}"
                 >
-                  <div class="item__checkWrap" index="${i}" @click="${this.handleCheckClick}">
+                  <div class="item__checkWrap" id="${item.id}" @click="${this.handleCheckClick}">
                     <div
                       class="${classMap({
                         item__check: true,
@@ -103,7 +104,7 @@ export default class App {
                       <i class="material-icons">check</i>
                     </div>
                   </div>
-                  <div class="item__timeWrap" index="${i}" @click="${this.handleTimeClick}">
+                  <div class="item__timeWrap" id="${item.id}" @click="${this.handleTimeClick}">
                     <div class="item__time">
                       ${String(date.getHours()).padStart(2, '0')}:${String(
                         date.getMinutes()
@@ -115,7 +116,7 @@ export default class App {
                       type="text"
                       value="${item.text}"
                       placeholder="テキストを入力"
-                      index="${i}"
+                      id="${item.id}"
                       @change="${this.handleTextChange}"
                       @focus="${this.handleTextFocus}"
                       @blur="${this.handleTextBlur}"
@@ -123,7 +124,7 @@ export default class App {
                   </div>
                   <div
                     class="item__delete"
-                    index="${i}"
+                    id="${item.id}"
                     @click="${this.handleDeleteClick}"
                   >
                     <i class="material-icons">delete_outline</i>
@@ -195,9 +196,10 @@ export default class App {
    * @param e
    */
   handleTimeClick(e) {
-    this.selectedNo = Number(e.currentTarget.getAttribute('index'));
+    this.selectedId = e.currentTarget.getAttribute('id');
     this.isSheetActive = true;
-    const date = new Date(this.list[this.selectedNo].time);
+    const found = this.list.find(v => v.id === this.selectedId);
+    const date = new Date(found.time);
     this.__moveHourPicker(date.getHours());
     this.__moveTimePicker(date.getMinutes());
     this.__render();
@@ -207,8 +209,10 @@ export default class App {
    * 追加押下時
    */
   handleAddClick() {
+    const now = Date.now();
     this.store.add({
-      time: Date.now(),
+      id: `ts_${now}`,
+      time: now,
       text: '',
       add: true
     });
@@ -218,8 +222,8 @@ export default class App {
    * 保存押下時
    */
   handleSaveClick() {
-    const selectedNo = this.selectedNo;
-    this.selectedNo = -1;
+    const selectedId = this.selectedId;
+    this.selectedId = '';
     this.isSheetActive = false;
     const hour = Math.round(
       this.$('.hour').scrollTop / this.cpPickerRowHeight
@@ -230,7 +234,7 @@ export default class App {
     const date = new Date();
     date.setHours(hour);
     date.setMinutes(time);
-    this.store.update(selectedNo, {
+    this.store.update(selectedId, {
       time: date.getTime()
     });
   }
@@ -241,7 +245,7 @@ export default class App {
    */
   handleLayerClick(e) {
     if (e.target.classList.contains('sheet')) {
-      this.selectedNo = -1;
+      this.selectedId = '';
       this.isSheetActive = false;
       this.__render();
     }
@@ -260,11 +264,11 @@ export default class App {
   }
 
   handleHourScrollEnd(e) {
-    // console.log('Hour End', this.selectedNo);
+    // console.log('Hour End', this.selectedId);
   }
 
   handleTimeScrollEnd(e) {
-    // console.log('Time End', this.selectedNo);
+    // console.log('Time End', this.selectedId);
   }
 
   /**
@@ -273,18 +277,8 @@ export default class App {
    */
   handleDeleteClick(e) {
     e.stopPropagation();
-    const index = Number(e.currentTarget.getAttribute('index'));
-    // TODO: refactor
-    const item = this.$$('.item')[index];
-    const animation = item.animate({
-      height: ['42px', '42px', 0],
-      opacity: [1, 0, 0],
-      backgroundColor:   ['rgba(194, 208, 204, 0.4)', 'rgba(194, 208, 204, 0.4)', 'transparent']
-    }, 400);
-    animation.onfinish = () => {
-      this.store.remove(index);
-    };
-    // this.store.remove(index);
+    const id = e.currentTarget.getAttribute('id');
+    this.store.remove(id);
   }
 
   /**
@@ -292,8 +286,8 @@ export default class App {
    * @param e
    */
   handleTextChange(e) {
-    const index = Number(e.currentTarget.getAttribute('index'));
-    this.store.update(index, {
+    const id = e.currentTarget.getAttribute('id');
+    this.store.update(id, {
       text: e.target.value
     });
   }
@@ -321,9 +315,10 @@ export default class App {
    * @param e
    */
   handleCheckClick(e) {
-    const index = Number(e.currentTarget.getAttribute('index'));
-    this.store.update(index, {
-      checked: !this.list[index].checked
+    const id = e.currentTarget.getAttribute('id');
+    const fount = this.list.find(v => v.id === id);
+    this.store.update(id, {
+      checked: !fount.checked
     });
   }
 
@@ -332,8 +327,7 @@ export default class App {
    * @param e
    */
   handleTextFocus(e) {
-    const index = Number(e.currentTarget.getAttribute('index'));
-    this.selectedNo = index;
+    this.selectedId = e.currentTarget.getAttribute('id');
     this.__render();
   }
 
@@ -342,7 +336,7 @@ export default class App {
    * @param e
    */
   handleTextBlur(e) {
-    this.selectedNo = -1;
+    this.selectedId = '';
     this.__render();
   }
 
@@ -364,10 +358,11 @@ export default class App {
    */
   __updateCustomProperty() {
     const now = new Date().getTime();
-    const endedList = this.list.filter(v => v.time < now);
+    const list = this.list.filter(v => !v.delete);
+    const endedList = list.filter(v => v.time < now);
     this.root.style.setProperty('--ts-ended-bar-height', `${endedList.length}`);
     // listの要素数を設定
-    this.root.style.setProperty('--ts-list-rows', `${this.list.length}`);
+    this.root.style.setProperty('--ts-list-rows', `${list.length}`);
   }
 
   /**
