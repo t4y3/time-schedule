@@ -1,7 +1,7 @@
 import { html, render, svg } from 'lit-html';
 import { repeat } from 'lit-html/directives/repeat';
 import { classMap } from 'lit-html/directives/class-map';
-import debounce from './_debounce';
+// import debounce from './_debounce';
 import { Store, TsItem } from './_store';
 
 export default class App {
@@ -35,19 +35,9 @@ export default class App {
     this.handleAddClick = this.handleAddClick.bind(this);
     this.handleLayerClick = this.handleLayerClick.bind(this);
     this.handleSaveClick = this.handleSaveClick.bind(this);
-    this.handleHourScroll = this.handleHourScroll.bind(this);
-    this.handleTimeScroll = this.handleTimeScroll.bind(this);
     this.handleDeleteClick = this.handleDeleteClick.bind(this);
     this.handleTimeClick = this.handleTimeClick.bind(this);
     this.handleTextChange = this.handleTextChange.bind(this);
-    this.handleHourScrollEnd = debounce(
-      this.handleHourScrollEnd.bind(this),
-      100
-    );
-    this.handleTimeScrollEnd = debounce(
-      this.handleTimeScrollEnd.bind(this),
-      100
-    );
     this.handleHourItemTap = this.handleHourItemTap.bind(this);
     this.handleTimeItemTap = this.handleTimeItemTap.bind(this);
     this.handleCheckClick = this.handleCheckClick.bind(this);
@@ -152,7 +142,7 @@ export default class App {
         >
           <div class="sheet__container">
             <div class="wrap">
-              <div class="hour" @scroll="${this.handleHourScroll}">
+              <div class="hour">
                 ${this.__getDummyPickerHourItem()}
                 ${repeat(
                   Array.from({ length: 24 }, (v, i) => i),
@@ -168,7 +158,7 @@ export default class App {
                 )}
                 ${this.__getDummyPickerHourItem()}
               </div>
-              <div class="time" @scroll="${this.handleTimeScroll}">
+              <div class="time">
                 ${this.__getDummyPickerTimeItem()}
                 ${repeat(
                   Array.from({ length: 60 }, (v, i) => i),
@@ -254,26 +244,6 @@ export default class App {
       this.isSheetActive = false;
       this.__render();
     }
-  }
-
-  handleHourScroll(e) {
-    // e.target.scrollTop
-    // console.log(e.target.scrollTop / this.cpPickerRowHeight);
-    this.handleHourScrollEnd(e);
-  }
-
-  handleTimeScroll(e) {
-    // e.target.scrollTop
-    // console.log(e.target.scrollTop / this.cpPickerRowHeight);
-    this.handleTimeScrollEnd(e);
-  }
-
-  handleHourScrollEnd(e) {
-    // console.log('Hour End', this.selectedId);
-  }
-
-  handleTimeScrollEnd(e) {
-    // console.log('Time End', this.selectedId);
   }
 
   /**
