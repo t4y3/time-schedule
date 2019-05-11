@@ -107,6 +107,26 @@ html, body {
   background-color: rgba(194, 208, 204, 0.1);
 }
 
+.item--add {
+  animation: linear .4s itemAdd;
+}
+
+@keyframes itemAdd {
+  0% {
+    height: 0;
+    opacity: 0;
+    background-color: rgba(194, 208, 204, 0.4);
+  }
+  50% {
+    height: 42px;
+    opacity: 1;
+    background-color: rgba(194, 208, 204, 0.4);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
 .item__checkWrap {
   display: flex;
   align-items: center;

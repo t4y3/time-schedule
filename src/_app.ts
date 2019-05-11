@@ -89,7 +89,8 @@ export default class App {
                   class="${classMap({
                     list__item: true,
                     item: true,
-                    'item--selected': this.selectedNo === i
+                    'item--selected': this.selectedNo === i,
+                    'item--add': !!item.add
                   })}"
                 >
                   <div class="item__checkWrap" index="${i}" @click="${this.handleCheckClick}">
@@ -208,7 +209,8 @@ export default class App {
   handleAddClick() {
     this.store.add({
       time: Date.now(),
-      text: ''
+      text: '',
+      add: true
     });
   }
 
@@ -272,12 +274,13 @@ export default class App {
   handleDeleteClick(e) {
     e.stopPropagation();
     const index = Number(e.currentTarget.getAttribute('index'));
+    // TODO: refactor
     const item = this.$$('.item')[index];
     const animation = item.animate({
-      height: ['42px', 0],
-      opacity: [1, 0],
-      backgroundColor:   ['rgba(194, 208, 204, 0.4)', 'transparent']
-    }, 200);
+      height: ['42px', '42px', 0],
+      opacity: [1, 0, 0],
+      backgroundColor:   ['rgba(194, 208, 204, 0.4)', 'rgba(194, 208, 204, 0.4)', 'transparent']
+    }, 400);
     animation.onfinish = () => {
       this.store.remove(index);
     };

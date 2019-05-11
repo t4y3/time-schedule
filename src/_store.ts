@@ -14,7 +14,8 @@ export class Store {
   constructor() {
     const storage = localStorage.getItem(KEY);
     if (storage) {
-      this.plans = this.sort(JSON.parse(storage));
+      const plans = JSON.parse(storage);
+      this.plans = this.deleteAdd(this.sort(plans));
     } else {
       this.plans = [];
     }
@@ -31,18 +32,18 @@ export class Store {
 
   @action
   add(plan) {
-    let plans = [].concat(this.plans, [plan]);
+    let plans = [].concat(this.deleteAdd(this.plans), [plan]);
     this.plans = this.sort(plans);
   }
 
   @action
   remove(index) {
-    this.plans = this.plans.filter((plan, i) => i !== index);
+    this.plans = this.deleteAdd(this.plans.filter((plan, i) => i !== index));
   }
 
   @action
   update(index, plan) {
-    this.plans[index] = Object.assign(this.plans[index], plan);
+    this.plans[index] = Object.assign(this.plans[index], plan, { add: false });
   }
 
   sort(plans) {
@@ -58,6 +59,15 @@ export class Store {
       };
     });
     return plans.sort((a, b) => a.time - b.time);
+  }
+
+  deleteAdd(plans) {
+    return plans.map(v => {
+      return {
+        ...v,
+        add: false
+      }
+    });
   }
 
   on(name, fn) {
