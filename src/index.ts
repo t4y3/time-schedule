@@ -1,3 +1,4 @@
+import 'web-animations-js';
 import store from './_store';
 import App from './_app';
 
