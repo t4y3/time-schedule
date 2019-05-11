@@ -42,7 +42,6 @@ export class Store {
 
   @action
   update(index, plan) {
-    console.log(index, plan)
     this.plans[index] = Object.assign(this.plans[index], plan);
   }
 

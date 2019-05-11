@@ -92,24 +92,22 @@ export default class App {
                     'item--selected': this.selectedNo === i
                   })}"
                 >
-                  <div
-                    class="${classMap({
-                      item__check: true,
-                      'item__check--checked': !!item.checked
-                    })}"
-                    index="${i}"
-                    @click="${this.handleCheckClick}"
-                  >
-                    <i class="material-icons">check</i>
+                  <div class="item__checkWrap" index="${i}" @click="${this.handleCheckClick}">
+                    <div
+                      class="${classMap({
+                        item__check: true,
+                        'item__check--checked': !!item.checked
+                      })}"
+                    >
+                      <i class="material-icons">check</i>
+                    </div>
                   </div>
-                  <div
-                    class="item__time"
-                    @click="${this.handleTimeClick}"
-                    index="${i}"
-                  >
-                    ${String(date.getHours()).padStart(2, '0')}:${String(
-                      date.getMinutes()
-                    ).padStart(2, '0')}
+                  <div class="item__timeWrap" index="${i}" @click="${this.handleTimeClick}">
+                    <div class="item__time">
+                      ${String(date.getHours()).padStart(2, '0')}:${String(
+                        date.getMinutes()
+                      ).padStart(2, '0')}
+                    </div>
                   </div>
                   <div class="item__text">
                     <input
@@ -273,8 +271,24 @@ export default class App {
    */
   handleDeleteClick(e) {
     e.stopPropagation();
+
+
+
     const index = Number(e.currentTarget.getAttribute('index'));
-    this.store.remove(index);
+
+
+
+    const item = this.$$('.item')[index];
+    const animation = item.animate({
+      height: ['42px', 0],
+      opacity: [1, 0],
+      backgroundColor:   ['rgba(194, 208, 204, 0.4)', 'transparent']
+    }, 200);
+    animation.onfinish = () => {
+      this.store.remove(index);
+    };
+
+    // this.store.remove(index);
   }
 
   /**

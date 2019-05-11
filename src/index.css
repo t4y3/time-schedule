@@ -87,7 +87,7 @@ html, body {
 
 .list__item {
   height: 42px;
-  padding: 0 16px;
+  padding: 0 8px 0 8px;
   position: relative;
   /*border-bottom: 1px solid rgba(194, 208, 204, 0.6);*/
 }
@@ -99,7 +99,7 @@ html, body {
 .item {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: stretch;
   transition: background-color .2s ease;
 }
 
@@ -107,11 +107,20 @@ html, body {
   background-color: rgba(194, 208, 204, 0.1);
 }
 
+.item__checkWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 8px;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
 .item__check {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 16px;
   width: 16px;
   height: 16px;
   border-radius: 50%;
@@ -134,15 +143,23 @@ html, body {
   color: #fff;
 }
 
-.item__time {
-  margin-right: 16px;
-  font-size: 14px;
+.item__timeWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 8px;
+  margin-right: 8px;
   cursor: pointer;
+}
+
+.item__time {
+  font-size: 14px;
 }
 
 .item__text {
   flex: 1;
-  margin-right: 16px;
+  margin-right: 8px;
   font-size: 16px;
 }
 
@@ -165,6 +182,11 @@ html, body {
 }
 
 .item__delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 8px;
   margin-left: auto;
   transition: all .2s ease;
   cursor: pointer;
